@@ -47,7 +47,7 @@ fun test4(args: Array<String>){ // $사용
 }
 
 class Person(val name : String, val age : Int)
-/*프로퍼티, val는 읽기 전용getter, var는 쓰기 읽기 setter, getter 필드는 기본 비공개*/
+/*프로퍼티, val는 읽기 전용getter, var는 쓰기 읽기 setter, getter/ 필드는 기본 비공개*/
 
 /*코틀린은 클래스와 함수 import 가 같다*/
 
@@ -101,3 +101,93 @@ fun recognize(c: Char) =
         in 'a'..'z' -> "It;s a letter!"
         else -> "I don't know"
     }
+
+fun collect(){
+    val set = hashSetOf(1,7,53)
+    val list = arrayListOf(1, 7, 53)
+    val map = hashMapOf(1 to "one", 7 to "seven", 53 to "fifty_three")
+}
+
+
+fun listTest(){
+    val strings = listOf("first", "second", "fourth");
+    strings.last()
+    val numbers = setOf(1, 14, 2)
+    numbers.maxOrNull()
+
+}
+
+fun <T> joinToString1(
+    collection : Collection<T>,
+    separator : String = ";",
+    prefix : String = "(",
+    postfix : String = ")"
+): String{
+    val result = StringBuilder(prefix)
+
+    for((index, element) in collection.withIndex()){
+        if(index>0) result.append(separator)
+        result.append(element)
+    }
+
+    result.append(postfix)
+    return result.toString()
+}
+
+fun joinToStringTest1(){
+    val list = listOf(1,2,3)
+    joinToString1(list, ";", "(", ")")
+}
+
+fun <T> Collection<T>.joinToString2(
+    separator : String = ",",
+    prefix : String = "",
+    postfix : String = "",
+): String{
+    val result = StringBuilder(prefix)
+    for((index, element) in this.withIndex()){
+        if(index>0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+
+fun joinToStringTest2() :String{
+    val list = listOf("1","2","3")
+    return list.joinToString2(" ")
+}
+
+fun <T> listOf(vararg elements : T): List<T> =
+    if(elements.size >0) elements.asList() else emptyList()
+
+fun listOfTest(){
+    val list = listOf("one", "two", "eight")
+}
+
+fun map1(){
+    val map = mapOf(1 to "one", 7 to "seven")
+
+    1.to("one")
+    1 to "one"
+}
+
+infix fun <A,B> A.to(that: B) : Pair <A,B> = Pair(this,that)
+
+fun parsePath(path: String) : List<String>{
+    val directory = path. substringBeforeLast("/")
+    val fullname = path.substringAfterLast("/")
+    val filename = fullname.substringBeforeLast(".")
+    val extension = fullname.substringAfterLast(".")
+
+    return listOf(directory, filename, extension)
+}
+
+fun parsePathUsingRegex(path : String){
+    val regex = """(.+)/(.+)\\.(.+)""".toRegex()
+    val matchResult = regex.matchEntire(path)
+    if(matchResult != null){
+        val (directory, filename, extension) = matchResult.destructured
+
+    }
+}
